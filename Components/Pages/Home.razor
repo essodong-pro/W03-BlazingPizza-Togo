@@ -1,0 +1,60 @@
+@page "/"
+@page "/menu"
+@inject CartState Cart
+
+<PageTitle>Blazing Pizza · Fresh from the oven</PageTitle>
+
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow"><span class="live-dot"></span> HOT, FRESH & MADE FOR YOU</span>
+        <h1>A little slice<br />of <em>happiness.</em></h1>
+        <p>Hand-stretched dough, bright ingredients, and big flavor. Find your new favorite, baked fresh when you order.</p>
+        <a class="button button-dark" href="#menu">Explore the menu <span>↓</span></a>
+        <div class="hero-note"><span>★★★★★</span> Loved by pizza people everywhere</div>
+    </div>
+    <div class="hero-art" aria-label="Freshly baked pizza illustration" role="img">
+        <div class="sunburst"></div>
+        <div class="pizza-plate"><div class="pizza"><i>🍅</i><i>🧀</i><i>🫒</i><i>🍃</i><i>🍅</i><i>🫑</i><i>🧀</i><i>🍃</i></div></div>
+        <div class="hero-sticker">OVEN<br />FRESH<br /><b>♥</b></div>
+        <div class="floating-tag">Made with<br /><strong>real love</strong></div>
+    </div>
+</section>
+
+<section class="menu-section" id="menu">
+    <div class="section-heading">
+        <div><span class="eyebrow">THE GOOD STUFF</span><h2>Pick your perfect pie.</h2></div>
+        <p>Every pizza starts with our signature dough<br class="desktop-only" /> and ends with a little bit of magic.</p>
+    </div>
+    <div class="filter-row" aria-label="Pizza categories">
+        @foreach (var category in Categories)
+        {
+            <button class="filter-chip @(SelectedCategory == category ? "selected" : "")" @onclick="() => SelectedCategory = category">@category</button>
+        }
+    </div>
+    <div class="pizza-grid">
+        @foreach (var pizza in VisiblePizzas)
+        {
+            <article class="pizza-card">
+                <div class="pizza-card-art @pizza.ArtClass">
+                    <span class="pizza-emoji">@pizza.Emoji</span>
+                    @if (pizza.Badge is not null) { <span class="pizza-badge">@pizza.Badge</span> }
+                    <span class="pizza-art-caption">BAKED WITH LOVE</span>
+                </div>
+                <div class="pizza-card-content">
+                    <div class="pizza-title-row"><h3>@pizza.Name</h3><span class="pizza-price">@PriceFormatter.Format(pizza.Price)</span></div>
+                    <p>@pizza.Description</p>
+                    <div class="pizza-card-bottom"><span class="pizza-meta">◉ @pizza.Category · 12″</span><button class="add-button" @onclick="() => Cart.Add(pizza)" aria-label="Add @pizza.Name to your order">＋ Add</button></div>
+                </div>
+            </article>
+        }
+    </div>
+    <div class="menu-note"><span>🍕</span><p><strong>Good things take a little time.</strong> We make every pizza to order, right here in our kitchen.</p></div>
+</section>
+
+@code {
+    private static readonly string[] Categories = ["All pizzas", "Vegetarian", "Meaty", "Spicy"];
+    private string SelectedCategory { get; set; } = "All pizzas";
+    private IEnumerable<Pizza> VisiblePizzas => SelectedCategory == "All pizzas"
+        ? PizzaMenu.All
+        : PizzaMenu.All.Where(p => p.Category == SelectedCategory);
+}
