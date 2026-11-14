@@ -18,6 +18,3 @@ Open the localhost URL printed in the terminal. Checkout is a demo confirmation 
 - The footer displays **Essodong N'GNAMA · Togo**.
 - The app uses Blazor routing, NavLinks, a shared layout, reusable pizza data, and interactive server rendering.
 
-## Publish and submit
-
-Create a new public GitHub repository and push this folder. Submit that repository URL and a screenshot of the running app in Canvas. Make sure the screenshot shows the header, pizza list with FCFA prices, and footer; scroll or zoom out to fit all three if needed.
